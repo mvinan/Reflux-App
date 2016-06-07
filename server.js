@@ -13,22 +13,25 @@ const engine = require('socket.io');
 const port = 3000
 const app = express()
 
-let data = {
-  {id: 1, autor: "Cosa uno", text: 'Comentario'},
-  {id: 2, autor: "Cosa dos", text: 'Comentario Dos'}
-}
+var data = [
+  { id: 1, author: "Cosa uno", text: 'Comentario'},
+  { id: 2, author: "Cosa dos", text: 'Comentario Dos'}
+]
 
-let server = http.createServer(app).listen( port, () => console.log(`Corriendo en el puerto ${port}`))
-const io = engine.listen(server)
+var server = http.createServer(app).listen(port, () => {
+  console.log(`Escuchando socket en el puerto ${port}`)
+});
+
+var io = engine.listen(server)
 
 io.on('connection', (socket)=>{
   socket.on('read', (err, res, ctx)=>{
-    io.emit(data)
+    io.emit('data', data)
   })
 
   socket.on('sign', (sign) => {
     data.unshift(sign)
-    io.emit('read', data)
+    io.emit('data', data)
   })
 })
 
