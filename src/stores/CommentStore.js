@@ -14,6 +14,10 @@ let CommentStore = Reflux.createStore({
 
   fetchComments: function(){
     this.socket.emit('read')
+  },
+
+  sendSign: function(comment){
+    this.socket.emit('sign', comment)
   }
 
 })
